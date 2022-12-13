@@ -2,13 +2,13 @@ import React from 'react'
 import { useState } from 'react'
 
 
-const Payment = ({disable}) => {
+const Payment = ({disable,createNewCourse}) => {
   const [showModal, setShowModal] = React.useState(false);
   const [answerSelectionType,setanswerSelectionType] = useState("5:00PM - 6:00PM")
-  const [fee,setfee] = useState("500 INR")
+  const [fee,setfee] = useState(500)
 
   const Create_Course = () => {
-    // props.createNewCourse({ a })
+    createNewCourse({ slot:answerSelectionType,fee:fee })
     // seta({
     //   ...a,
     //   name: "",

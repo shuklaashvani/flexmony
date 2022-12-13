@@ -1,12 +1,12 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState, useRef } from "react";
-// import axios from "axios";
+import axios from "axios";
 // import { AuthProvider } from '../Auth/auth';
 // import { useAuth } from '../Auth/auth';
-// import toast from 'react-hot-toast';
+import toast from 'react-hot-toast';
 // import SimpleReactValidator from 'simple-react-validator';
-
+import Cookies from 'js-cookie'
 
 
 function Login() {
@@ -24,7 +24,7 @@ function Login() {
   const [email, setemail] = useState("")
   const [password, setpassword] = useState("")
   // const [warning,setWarning] = useState("")
-//   const URL = process.env.REACT_APP_SERVER
+  const URL = process.env.REACT_APP_SERVER
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,34 +34,31 @@ function Login() {
     }
     
     Navigate('/');
-    // axios.post(`${URL}/login`, data).then(res => {
-    //   console.log(res) 
-    //   if (res.data.status === "Authorised") {
-    //     auth.login(res.data)
-    //     // if (res.data.role === "Admin"){
-    //     //   Navigate('/AdminDashboard');
-    //     // }
-    //     // if (res.data.role === "User"){
-    //     Navigate('/');
-    //     // }
-    //   }
+    axios.post(`http://172.29.108.209:5000/login`, data).then(res => {
+      console.log(res) 
+      if (res.data.status === "Authorised") {
+        // auth.login(res.data) 
+        Cookies.set('token',res.data.token, { expires: 1,secure: true })
+        Navigate('/');
+        // }
+      }
 
-    //   else {
-    //     // toast.error("Invalid credentials")
-    //     // setWarning("Invalid credentials")
-    //   }
-    // }).catch(err => {
-    //   // console.log(e)
-    //   if (err.response.status === 401) {
-    //     // console.log(err)
-    //     toast.error(err.response.data)
-    //   } else {
-    //     // console.log(err.message)
-    //     toast.error(err.message)
-    //   }
-    //   // toast.error("there are some error")
-    //   // setWarning("Invalid credentials")
-    // });
+      else {
+        // toast.error("Invalid credentials")
+        // setWarning("Invalid credentials")
+      }
+    }).catch(err => {
+      // console.log(e)
+      if (err.response.status === 401) {
+        // console.log(err)
+        toast.error(err.response.data)
+      } else {
+        // console.log(err.message)
+        toast.error(err.message)
+      }
+      // toast.error("there are some error")
+      // setWarning("Invalid credentials")
+    });
 
     console.log(data)
   }

@@ -6,9 +6,12 @@ import Register from './component/Register';
 import Dashboard from './component/Dashboard';
 import Notfound from './component/Notfound';
 import { Toaster } from 'react-hot-toast';
-
+import Cookies from 'js-cookie'
+import Protected from './component/Protected';
 
 function App() {
+  const token = Cookies.get('token')
+
   return (
     <div className="App">
       <div>
@@ -19,15 +22,21 @@ function App() {
       </div>
       <Routes>
         <Route index path="/Login" element={
+          <Protected isLoggedIn={token?false:true} replace="">
                   <Login />
+          </Protected>
               }
                 />
         <Route path="/register" element={
+            <Protected isLoggedIn={token?false:true} replace="">
                   <Register />
+            </Protected>
               }
                 />
         <Route path="/" element={
+          <Protected isLoggedIn={token?true:false} replace="Login">
                   <Dashboard />
+          </Protected>
               }
                 />
         <Route path="*" element={

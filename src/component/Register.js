@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useRef } from "react";
 import {useState} from "react";
-// import axios from 'axios';
+import axios from 'axios';
 import toast from 'react-hot-toast';
 import validator from 'validator'
 
@@ -13,7 +13,7 @@ function Register() {
     const NavigateToLogin = () => {
         Navigate('/Login');
       };
-    // const URL = process.env.REACT_APP_SERVER
+    const URL = process.env.REACT_APP_SERVER
     const [username,setusername] = useState("")
     const [password,setpassword] = useState("")
     const [email,setemail] = useState("")    
@@ -78,20 +78,23 @@ function Register() {
             toast.error("age must be between 18 to 65")
         }
         else{
-            // axios.post(`${URL}/register`,data).then(
-            //     res=>{
-            //         // console.log(res)
-            //         if(res.status === 201){
-            //             toast.success("registered")
-            //             NavigateToLogin()
-            //         }
-            //         else{
-            //             toast.error(res.data._message)
-            //         }
-            //     }
-            //     ).catch(e=>console.log(e["error"]))
-            toast.success("All verification done")
-            console.log("All verification done")
+            axios.post(`http://172.29.108.209:5000/register`,data).then(
+                res=>{
+                    console.log(res)
+                    // if(res.status === 201){
+                        toast.success("registered")
+                        NavigateToLogin()
+                    // }
+                    // else{
+                    //     toast.error(res.data._message)
+                    // }
+                }
+                ).catch(e=>{
+                    toast.error(e.message)
+                    console.log (e)
+                })
+            // toast.success("All verification done")
+            // console.log("All verification done")
         }
         
     }
@@ -139,7 +142,7 @@ function Register() {
 
                     
                     <input 
-                        type="passwor••••••••d" 
+                        type="password" 
                         autoComplete='off' 
                         maxLength="20" 
                         minLength="6" 
